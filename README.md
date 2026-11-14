@@ -60,3 +60,5 @@ Standard Vercel project: build command `npm run build`, output `dist`,
 `MONGO_USER` / `MONGO_PASSWORD` / `MONGO_HOST` (or `MONGODB_URI`) for the
 persistent store. Without them the app runs in a clearly labelled in-memory
 demo mode.
+
+Deployed demo build triggers on push to main.
