@@ -95,7 +95,13 @@ export function classifyConversation(conv) {
 
 // A response is "waiting" when the last word is ours (client or assistant).
 export function computeWaiting(conv) {
-  return isOutbound(conv, lastMessage(conv));
+  if (!isOutbound(conv, lastMessage(conv))) return false;
+  // "Waiting for their reply" means the ball is with the correspondent. When the
+  // classification says the client personally must act, an assistant holding
+  // acknowledgment does not move the ball off the client.
+  const label = conv.classification?.label || conv.classification?.auto;
+  if (label === 'client') return false;
+  return true;
 }
 
 const DATE_RE = /\b((\d{1,2}\s+(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*(?:\s+\d{4})?)|((?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\s+\d{1,2}(?:,\s*\d{4})?)|(\d{1,2}\s*[:.]\s*\d{2}\s*(?:AM|PM|am|pm))|(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)\b)/g;
@@ -197,4 +203,4 @@ export function answerQuestion(question, ctx) {
   const m = list.filter(c => words.some(w => (c.subject + ' ' + c.from.name).toLowerCase().includes(w))).slice(0, 5);
   if (m.length) return { text: `I found these matching conversations:\n${m.map(fmt).join('\n')}`, refs: m.map(c => c.id) };
   return { text: 'I can help with: emails needing attention, what the client must answer, pending replies, meetings found in email, summaries, and drafting replies. Try one of the suggested questions.', refs: [] };
-    }
+                                                                                                                  }
