@@ -43,6 +43,7 @@ let mongo = null;       // { client, db }
 let mode = 'memory';
 
 export function storageMode() { return mode; }
+export async function ensureInit() { await init(); }
 
 function mongoUri() {
   if (process.env.MONGODB_URI) return process.env.MONGODB_URI;
@@ -172,4 +173,4 @@ export async function getSyncIndex() {
   await init();
   if (mongo) { const r = await mongo.db.collection('meta').findOne({ _id: 'syncIndex' }); return r ? r.value : 0; }
   return state.syncIndex;
-    }
+}
