@@ -257,7 +257,7 @@ app.post('/api/sync', requireAuth, async (req, res) => {
   res.json({ change, conversation: publicConv(conv), reclassified: moved });
 });
 
-app.get('/api/health', (req, res) => res.json({ ok: true, storage: db.storageMode(), simulated: true }));
+app.get('/api/health', async (req, res) => { await db.ensureInit(); res.json({ ok: true, storage: db.storageMode(), simulated: true }); });
 
 app.use('/api', (req, res) => res.status(404).json({ error: 'Not found' }));
 
