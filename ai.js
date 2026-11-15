@@ -203,4 +203,4 @@ export function answerQuestion(question, ctx) {
   const m = list.filter(c => words.some(w => (c.subject + ' ' + c.from.name).toLowerCase().includes(w))).slice(0, 5);
   if (m.length) return { text: `I found these matching conversations:\n${m.map(fmt).join('\n')}`, refs: m.map(c => c.id) };
   return { text: 'I can help with: emails needing attention, what the client must answer, pending replies, meetings found in email, summaries, and drafting replies. Try one of the suggested questions.', refs: [] };
-                                                                                                                  }
+}
